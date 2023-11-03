@@ -58,7 +58,7 @@ impl EventHandler for Handler {
                             })
                         })
                         .await
-                        .expect("Whee");
+                        .expect("Failed to send log analysis message");
                 } else {
                     msg.channel_id
                         .say(

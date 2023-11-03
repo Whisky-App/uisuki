@@ -3,6 +3,13 @@ name = "uisuki"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+log = "0.4.20"
+semver = "1.0"
+iso8601 = "0.6.1"
+
+[dependencies.serenity]
+default-features = false
+features = ["client", "gateway", "rustls_backend", "model"]
+version = "0.11"

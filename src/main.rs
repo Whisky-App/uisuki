@@ -5,8 +5,6 @@ use serenity::prelude::*;
 use shuttle_runtime;
 use shuttle_secrets::SecretStore;
 use std::default::Default;
-use std::io::ErrorKind;
-use std::{io, str};
 use std::str::FromStr;
 
 pub mod header;
@@ -110,9 +108,8 @@ async fn serenity(
     Ok(client.into())
 }
 
-// TODO: Don't use a Box for this
-async fn parse_log(log_data: Vec<u8>) -> Option<Box<header::LogHeader>> {
-    let log_string = str::from_utf8(log_data.as_slice()).expect("Failed to get log as array");
+async fn parse_log(log_data: Vec<u8>) -> Option<header::LogHeader> {
+    let log_string = String::from_utf8(log_data).expect("Failed to get log as array");
     let mut log_header: header::LogHeader = Default::default();
 
     for line in log_string.lines() {
@@ -142,10 +139,10 @@ async fn parse_log(log_data: Vec<u8>) -> Option<Box<header::LogHeader>> {
                     }
                 }
                 "Bottle Name" => {
-                    log_header.bottle_name = value.trim().to_string();
+                    log_header.bottle_name = value.trim().to_owned();
                 }
                 "Bottle URL" => {
-                    log_header.bottle_url = value.trim().to_string();
+                    log_header.bottle_url = value.trim().to_owned();
                 }
                 "Wine Version" => {
                     match Version::parse(value.trim()) {
@@ -178,7 +175,7 @@ async fn parse_log(log_data: Vec<u8>) -> Option<Box<header::LogHeader>> {
                     }
                 }
                 "Arguments" => {
-                    log_header.arguments = value.trim().to_string();
+                    log_header.arguments = value.trim().to_owned();
                 }
                 _ => println!("Found unknown key '{key}'"),
             }
@@ -190,5 +187,5 @@ async fn parse_log(log_data: Vec<u8>) -> Option<Box<header::LogHeader>> {
         return None;
     }
 
-    return Some(Box::from(log_header));
+    return Some(log_header);
 }

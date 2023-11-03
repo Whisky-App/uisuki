@@ -116,15 +116,22 @@ async fn parse_log(log_data: Vec<u8>) -> Box<header::LogHeader> {
             let (key, value) = line.split_once(":").unwrap();
             match key.trim() {
                 "Whisky Version" => {
-                    log_header.whisky_version.0 =
-                        Version::parse(value.trim()).expect("Failed to parse version");
+                    match Version::parse(value.trim()) {
+                        Err(_) => println!("Whisky Version not found!"),
+                        Ok(i) => log_header.whisky_version.0 = i
+                    }
                 }
                 "Date" => {
-                    log_header.date = date(value.trim()).unwrap();
+                    match date(value.trim()) {
+                        Err(_) => println!("Date not found!"),
+                        Ok(i) => log_header.date = i
+                    }
                 }
                 "macOS Version" => {
-                    log_header.macos_version.0 =
-                        Version::parse(value.trim()).expect("Failed to parse version");
+                    match Version::parse(value.trim()) {
+                        Err(_) => println!("macOS Version not found!"),
+                        Ok(i) => log_header.macos_version.0 = i
+                    }
                 }
                 "Bottle Name" => {
                     log_header.bottle_name = value.trim().to_string();
@@ -133,27 +140,39 @@ async fn parse_log(log_data: Vec<u8>) -> Box<header::LogHeader> {
                     log_header.bottle_url = value.trim().to_string();
                 }
                 "Wine Version" => {
-                    log_header.wine_version.0 =
-                        Version::parse(value.trim()).expect("Failed to parse version");
+                    match Version::parse(value.trim()) {
+                        Err(_) => println!("Wine Version not found!"),
+                        Ok(i) => log_header.wine_version.0 = i
+                    }
                 }
                 "Windows Version" => {
-                    log_header.windows_version =
-                        header::WinVersion::from_str(value.trim()).unwrap();
+                    match header::WinVersion::from_str(value.trim()) {
+                        Err(_) => println!("Windows Version not found!"),
+                        Ok(i) => log_header.windows_version = i
+                    }
                 }
                 "Enhanced Sync" => {
-                    log_header.enhanced_sync =
-                        header::EnhancedSync::from_str(value.trim()).unwrap();
+                    match header::EnhancedSync::from_str(value.trim()) {
+                        Err(_) => println!("Enhanced Sync not found!"),
+                        Ok(i) => log_header.enhanced_sync = i
+                    }
                 }
                 "Metal HUD" => {
-                    log_header.metal_hud = value.trim().parse().unwrap();
+                    match value.trim().parse() {
+                        Err(_) => println!("Metal HUD not found!"),
+                        Ok(i) => log_header.metal_hud = i
+                    }
                 }
                 "Metal Trace" => {
-                    log_header.metal_trace = value.trim().parse().unwrap();
+                    match value.trim().parse() {
+                        Err(_) => println!("Metal Trace not found!"),
+                        Ok(i) => log_header.metal_trace = i
+                    }
                 }
                 "Arguments" => {
                     log_header.arguments = value.trim().to_string();
                 }
-                _ => println!("Don't care"),
+                _ => println!("Found unknown key '{key}'"),
             }
         }
     }

@@ -2,7 +2,7 @@ use std::fmt::{Display, Formatter};
 use semver::{BuildMetadata, Prerelease, Version};
 use std::str::FromStr;
 
-#[derive(Default)]
+#[derive(Default, PartialEq)]
 pub enum WinVersion {
     WinXP,
     Win7,
@@ -39,7 +39,7 @@ impl FromStr for WinVersion {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, PartialEq)]
 pub enum EnhancedSync {
     None,
     ESync,
@@ -70,6 +70,7 @@ impl FromStr for EnhancedSync {
     }
 }
 
+#[derive(PartialEq)]
 pub struct WhiskyVersion(pub Version);
 impl Default for WhiskyVersion {
     fn default() -> Self {

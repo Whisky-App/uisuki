@@ -5,7 +5,8 @@ use serenity::prelude::*;
 use shuttle_runtime;
 use shuttle_secrets::SecretStore;
 use std::default::Default;
-use std::str;
+use std::io::ErrorKind;
+use std::{io, str};
 use std::str::FromStr;
 
 pub mod header;
@@ -25,8 +26,6 @@ impl EventHandler for Handler {
             let filename = attachment.filename.clone();
 
             if content_type == "text/plain; charset=utf-8" && filename.ends_with(".log") {
-                let header =
-                    parse_log(attachment.download().await.expect("Failed to download log")).await;
                 let mut id = msg.channel_id;
 
                 match msg.thread.clone() {
@@ -38,27 +37,36 @@ impl EventHandler for Handler {
 
                 // if ALLOWED_CHANNELS.contains(id.as_ref()) {
                 if true {
-                    msg.channel_id
-                        .send_message(&context, |m| {
-                            m.embed(|e| {
-                                e.color(0xC86432)
-                                    .field("Whisky Version", header.whisky_version.0, true)
-                                    .field("Date", header.date.to_owned(), true)
-                                    .field("macOS Version", header.macos_version.0, true)
-                                    .field("Wine Version", header.wine_version.0, true)
-                                    .field("Windows Version", header.windows_version, true)
-                                    .field("Enhanced Sync", header.enhanced_sync, true)
-                                    .field("Bottle Name", header.bottle_name.clone(), false)
-                                    .field("Bottle URL", format!("`{}`", header.bottle_url), false)
-                                    .field("Arguments", format!("`{}`", header.arguments), false)
-                                    .footer(|f| {
-                                        f.text(format!("Log uploaded by @{}", msg.author.name));
-                                        f
-                                    })
-                            })
-                        })
-                        .await
-                        .expect("Failed to send log analysis message");
+                    let header = parse_log(attachment.download().await.expect("Failed to download log")).await;
+
+                    match header {
+                        None => {
+                            msg.reply_ping(&context, "Log in invalid format!").await.expect("Failed to send message");
+                        },
+                        Some(header) => {
+                            msg.channel_id
+                                .send_message(&context, |m| {
+                                    m.embed(|e| {
+                                        e.color(0xC86432)
+                                            .field("Whisky Version", header.whisky_version.0, true)
+                                            .field("Date", header.date.to_owned(), true)
+                                            .field("macOS Version", header.macos_version.0, true)
+                                            .field("Wine Version", header.wine_version.0, true)
+                                            .field("Windows Version", header.windows_version, true)
+                                            .field("Enhanced Sync", header.enhanced_sync, true)
+                                            .field("Bottle Name", header.bottle_name.clone(), false)
+                                            .field("Bottle URL", format!("`{}`", header.bottle_url), false)
+                                            .field("Arguments", format!("`{}`", header.arguments), false)
+                                            .footer(|f| {
+                                                f.text(format!("Log uploaded by @{}", msg.author.name));
+                                                f
+                                            })
+                                    }).reference_message(&msg)
+                                })
+                                .await
+                                .expect("Failed to send log analysis message");
+                        }
+                    }
                 } else {
                     msg.channel_id
                         .say(
@@ -103,7 +111,7 @@ async fn serenity(
 }
 
 // TODO: Don't use a Box for this
-async fn parse_log(log_data: Vec<u8>) -> Box<header::LogHeader> {
+async fn parse_log(log_data: Vec<u8>) -> Option<Box<header::LogHeader>> {
     let log_string = str::from_utf8(log_data.as_slice()).expect("Failed to get log as array");
     let mut log_header: header::LogHeader = Default::default();
 
@@ -177,5 +185,10 @@ async fn parse_log(log_data: Vec<u8>) -> Box<header::LogHeader> {
         }
     }
 
-    return Box::from(log_header);
+    // Log was not parsed at all, probably not right format
+    if log_header == Default::default() {
+        return None;
+    }
+
+    return Some(Box::from(log_header));
 }

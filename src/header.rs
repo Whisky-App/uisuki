@@ -4,7 +4,7 @@ use std::fmt::{Display, Formatter};
 
 pub mod types;
 
-#[derive(Default)]
+#[derive(Default, PartialEq)]
 pub struct LogHeader {
     pub whisky_version: WhiskyVersion,
     pub date: Date,

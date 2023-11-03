@@ -12,6 +12,8 @@ pub mod header;
 
 struct Handler;
 
+const ALLOWED_CHANNELS: [ChannelId; 2] = [ChannelId(1115957389062066218), ChannelId(1115961098961702992)];
+
 #[serenity::async_trait]
 impl EventHandler for Handler {
     async fn message(&self, context: Context, msg: Message) {
@@ -21,24 +23,35 @@ impl EventHandler for Handler {
 
             if content_type == "text/plain; charset=utf-8" && filename.ends_with(".log") {
                 let header = parse_log(attachment.download().await.expect("Failed to download log")).await;
+                let mut id = msg.channel_id;
 
-                msg.channel_id.send_message(&context, |m| {
-                    m.embed(|e| e
-                        .color(0xC86432)
-                        .field("Whisky Version", header.whisky_version.0, true)
-                        .field("Date", header.date.to_owned(), true)
-                        .field("macOS Version", header.macos_version.0, true)
-                        .field("Wine Version", header.wine_version.0, true)
-                        .field("Windows Version", header.windows_version, true)
-                        .field("Enhanced Sync", header.enhanced_sync, true)
-                        .field("Bottle Name", header.bottle_name.clone(), false)
-                        .field("Bottle URL", format!("`{}`", header.bottle_url), false)
-                        .field("Arguments", format!("`{}`", header.arguments), false)
-                        .footer(|f| {
-                            f.text(format!("Log uploaded by @{}", msg.author.name));
-                            f
-                        }))
-                }).await.expect("Whee");
+                msg.
+                match msg.thread.clone() {
+                    None => {println!("Found nothing")}
+                    Some(channel) => {id = channel.parent_id.expect("Failed to get ID")}
+                }
+
+                if ALLOWED_CHANNELS.contains(id.as_ref()) {
+                    msg.channel_id.send_message(&context, |m| {
+                        m.embed(|e| e
+                            .color(0xC86432)
+                            .field("Whisky Version", header.whisky_version.0, true)
+                            .field("Date", header.date.to_owned(), true)
+                            .field("macOS Version", header.macos_version.0, true)
+                            .field("Wine Version", header.wine_version.0, true)
+                            .field("Windows Version", header.windows_version, true)
+                            .field("Enhanced Sync", header.enhanced_sync, true)
+                            .field("Bottle Name", header.bottle_name.clone(), false)
+                            .field("Bottle URL", format!("`{}`", header.bottle_url), false)
+                            .field("Arguments", format!("`{}`", header.arguments), false)
+                            .footer(|f| {
+                                f.text(format!("Log uploaded by @{}", msg.author.name));
+                                f
+                            }))
+                    }).await.expect("Whee");
+                } else {
+                    msg.channel_id.say(&context, format!("Sorry <@{}>! I can only parse logs in <#{}> and <#{}>.", msg.author.id.0, ALLOWED_CHANNELS[0].0, ALLOWED_CHANNELS[1].0)).await.expect("Failed to send message");
+                }
             }
         }
 
@@ -49,7 +62,6 @@ impl EventHandler for Handler {
 
     async fn ready(&self, _: Context, ready: Ready) {
         println!("{} is connected!", ready.user.name);
-        // let _ = ChannelId(1115961098961702992).say(&context, "Its alive!").await;
     }
 }
 

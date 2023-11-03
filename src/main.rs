@@ -1,11 +1,7 @@
-use iso8601::date;
-use semver::Version;
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 use shuttle_runtime;
 use shuttle_secrets::SecretStore;
-use std::default::Default;
-use std::str::FromStr;
 
 pub mod header;
 
@@ -35,12 +31,17 @@ impl EventHandler for Handler {
 
                 // if ALLOWED_CHANNELS.contains(id.as_ref()) {
                 if true {
-                    let header = parse_log(attachment.download().await.expect("Failed to download log")).await;
+                    let header = header::LogHeader::parse_log(
+                        attachment.download().await.expect("Failed to download log"),
+                    )
+                    .await;
 
                     match header {
                         None => {
-                            msg.reply_ping(&context, "Log in invalid format!").await.expect("Failed to send message");
-                        },
+                            msg.reply_ping(&context, "Log in invalid format!")
+                                .await
+                                .expect("Failed to send message");
+                        }
                         Some(header) => {
                             msg.channel_id
                                 .send_message(&context, |m| {
@@ -53,13 +54,25 @@ impl EventHandler for Handler {
                                             .field("Windows Version", header.windows_version, true)
                                             .field("Enhanced Sync", header.enhanced_sync, true)
                                             .field("Bottle Name", header.bottle_name.clone(), false)
-                                            .field("Bottle URL", format!("`{}`", header.bottle_url), false)
-                                            .field("Arguments", format!("`{}`", header.arguments), false)
+                                            .field(
+                                                "Bottle URL",
+                                                format!("`{}`", header.bottle_url),
+                                                false,
+                                            )
+                                            .field(
+                                                "Arguments",
+                                                format!("`{}`", header.arguments),
+                                                false,
+                                            )
                                             .footer(|f| {
-                                                f.text(format!("Log uploaded by @{}", msg.author.name));
+                                                f.text(format!(
+                                                    "Log uploaded by @{}",
+                                                    msg.author.name
+                                                ));
                                                 f
                                             })
-                                    }).reference_message(&msg)
+                                    })
+                                    .reference_message(&msg)
                                 })
                                 .await
                                 .expect("Failed to send log analysis message");
@@ -106,86 +119,4 @@ async fn serenity(
         .expect("Failed to create client");
 
     Ok(client.into())
-}
-
-async fn parse_log(log_data: Vec<u8>) -> Option<header::LogHeader> {
-    let log_string = String::from_utf8(log_data).expect("Failed to get log as array");
-    let mut log_header: header::LogHeader = Default::default();
-
-    for line in log_string.lines() {
-        if line.is_empty() {
-            continue;
-        }
-
-        if line.contains(":") {
-            let (key, value) = line.split_once(":").unwrap();
-            match key.trim() {
-                "Whisky Version" => {
-                    match Version::parse(value.trim()) {
-                        Err(_) => println!("Whisky Version not found!"),
-                        Ok(i) => log_header.whisky_version.0 = i
-                    }
-                }
-                "Date" => {
-                    match date(value.trim()) {
-                        Err(_) => println!("Date not found!"),
-                        Ok(i) => log_header.date = i
-                    }
-                }
-                "macOS Version" => {
-                    match Version::parse(value.trim()) {
-                        Err(_) => println!("macOS Version not found!"),
-                        Ok(i) => log_header.macos_version.0 = i
-                    }
-                }
-                "Bottle Name" => {
-                    log_header.bottle_name = value.trim().to_owned();
-                }
-                "Bottle URL" => {
-                    log_header.bottle_url = value.trim().to_owned();
-                }
-                "Wine Version" => {
-                    match Version::parse(value.trim()) {
-                        Err(_) => println!("Wine Version not found!"),
-                        Ok(i) => log_header.wine_version.0 = i
-                    }
-                }
-                "Windows Version" => {
-                    match header::WinVersion::from_str(value.trim()) {
-                        Err(_) => println!("Windows Version not found!"),
-                        Ok(i) => log_header.windows_version = i
-                    }
-                }
-                "Enhanced Sync" => {
-                    match header::EnhancedSync::from_str(value.trim()) {
-                        Err(_) => println!("Enhanced Sync not found!"),
-                        Ok(i) => log_header.enhanced_sync = i
-                    }
-                }
-                "Metal HUD" => {
-                    match value.trim().parse() {
-                        Err(_) => println!("Metal HUD not found!"),
-                        Ok(i) => log_header.metal_hud = i
-                    }
-                }
-                "Metal Trace" => {
-                    match value.trim().parse() {
-                        Err(_) => println!("Metal Trace not found!"),
-                        Ok(i) => log_header.metal_trace = i
-                    }
-                }
-                "Arguments" => {
-                    log_header.arguments = value.trim().to_owned();
-                }
-                _ => println!("Found unknown key '{key}'"),
-            }
-        }
-    }
-
-    // Log was not parsed at all, probably not right format
-    if log_header == Default::default() {
-        return None;
-    }
-
-    return Some(log_header);
 }

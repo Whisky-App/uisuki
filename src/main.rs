@@ -96,6 +96,14 @@ impl EventHandler for Handler {
         if msg.content == "~ping" {
             let _ = msg.channel_id.say(&context, "Pong!").await;
         }
+
+        if msg.content.contains("fortnite") {
+            let _ = msg.reply_ping(&context, "no.").await;
+        }
+
+        if msg.content.contains("Fortnite") {
+            let _ = msg.reply_ping(&context, "no.").await;
+        }
     }
 
     async fn ready(&self, _: Context, ready: Ready) {

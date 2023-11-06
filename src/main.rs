@@ -104,6 +104,16 @@ impl EventHandler for Handler {
         if msg.content.contains("Fortnite") {
             let _ = msg.reply_ping(&context, "no.").await;
         }
+
+        if msg.content.starts_with("~say ") {
+            if msg.author.id == 415544018018238474 {
+                let message = msg.content.replace("~say ", "");
+                let _ = msg.channel_id.say(&context, message).await;
+                let _ = msg.delete(&context).await;
+            } else {
+                println!("User {} tried to say something", msg.author.id);
+            }
+        }
     }
 
     async fn ready(&self, _: Context, ready: Ready) {

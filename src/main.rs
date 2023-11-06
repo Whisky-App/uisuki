@@ -94,7 +94,7 @@ impl EventHandler for Handler {
         }
 
         if msg.content == "~ping" {
-            let _ = msg.channel_id.say(&context, "Pong!").await;
+            let _ = msg.channel_id.say(&context, "Pong~").await;
         }
 
         if msg.content.contains("fortnite") {
@@ -111,6 +111,7 @@ impl EventHandler for Handler {
                 let _ = msg.channel_id.say(&context, message).await;
                 let _ = msg.delete(&context).await;
             } else {
+                let _ = msg.reply_ping(&context, "Sorry, u got no perms~").await;
                 println!("User {} tried to say something", msg.author.id);
             }
         }

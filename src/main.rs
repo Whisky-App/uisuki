@@ -12,6 +12,8 @@ const ALLOWED_CHANNELS: [ChannelId; 2] = [
     ChannelId(1115961098961702992),
 ];
 
+const MOD_ROLE: RoleId = RoleId(1115957910284017714);
+
 #[serenity::async_trait]
 impl EventHandler for Handler {
     async fn message(&self, context: Context, msg: Message) {
@@ -106,7 +108,7 @@ impl EventHandler for Handler {
         }
 
         if msg.content.starts_with("~say ") {
-            if msg.author.id == 415544018018238474 {
+            if msg.author.has_role(&context, msg.guild_id, MOD_ROLE) {
                 let message = msg.content.replace("~say ", "");
                 let _ = msg.channel_id.say(&context, message).await;
                 let _ = msg.delete(&context).await;

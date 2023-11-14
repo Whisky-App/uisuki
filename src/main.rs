@@ -121,7 +121,7 @@ impl EventHandler for Handler {
                         println!("User {} tried to say something", msg.author.id);
                     }
                 },
-                None(_) => println!("No Guild ID found!")
+                None => println!("No Guild ID found!")
             }
         }
     }

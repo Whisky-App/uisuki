@@ -108,7 +108,7 @@ impl EventHandler for Handler {
         }
 
         if msg.content.starts_with("~say ") {
-            if msg.author.has_role(&context, msg.guild_id, MOD_ROLE) {
+            if msg.author.has_role(&context, msg.guild_id.unwrap().0, MOD_ROLE).await.unwrap() {
                 let message = msg.content.replace("~say ", "");
                 let _ = msg.channel_id.say(&context, message).await;
                 let _ = msg.delete(&context).await;

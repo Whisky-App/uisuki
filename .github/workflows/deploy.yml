@@ -12,6 +12,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: ShuttleHQ deploy
+    - uses: shuttle-hq/deploy-action@main
+      name: ShuttleHQ deploy
       with:
         deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+        secrets: |
+          DISCORD_TOKEN = '${{ secrets.DISCORD_TOKEN }}'

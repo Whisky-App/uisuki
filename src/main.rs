@@ -109,8 +109,8 @@ impl EventHandler for Handler {
 
         if msg.content.starts_with("~say ") {
             match msg.guild_id {
-                Ok(id) => {
-                    let has_mod_role = msg.author.has_role(&context, id, MOD_ROLE).await.unwrap_or_else(false);
+                Some(id) => {
+                    let has_mod_role = msg.author.has_role(&context, id, MOD_ROLE).await.unwrap_or(false);
 
                     if has_mod_role {
                         let message = msg.content.replace("~say ", "");
@@ -121,7 +121,7 @@ impl EventHandler for Handler {
                         println!("User {} tried to say something", msg.author.id);
                     }
                 },
-                Err(_) => println!("No Guild ID found!")
+                None(_) => println!("No Guild ID found!")
             }
         }
     }

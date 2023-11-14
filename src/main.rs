@@ -108,13 +108,20 @@ impl EventHandler for Handler {
         }
 
         if msg.content.starts_with("~say ") {
-            if msg.author.has_role(&context, msg.guild_id.unwrap().0, MOD_ROLE).await.unwrap() {
-                let message = msg.content.replace("~say ", "");
-                let _ = msg.channel_id.say(&context, message).await;
-                let _ = msg.delete(&context).await;
-            } else {
-                let _ = msg.reply_ping(&context, "Sorry, u got no perms~").await;
-                println!("User {} tried to say something", msg.author.id);
+            match msg.guild_id {
+                Ok(id) => {
+                    let has_mod_role = msg.author.has_role(&context, id, MOD_ROLE).await.unwrap_or_else(false);
+
+                    if has_mod_role {
+                        let message = msg.content.replace("~say ", "");
+                        let _ = msg.channel_id.say(&context, message).await;
+                        let _ = msg.delete(&context).await;
+                    } else {
+                        let _ = msg.reply_ping(&context, "Sorry, u got no perms~").await;
+                        println!("User {} tried to say something", msg.author.id);
+                    }
+                },
+                Err(_) => println!("No Guild ID found!")
             }
         }
     }

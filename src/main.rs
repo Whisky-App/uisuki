@@ -9,12 +9,16 @@ use log::info;
 
 use crate::commands::ping::*;
 use crate::commands::say::*;
+use crate::commands::discord::*;
+use crate::commands::game_support::*;
+use crate::commands::github::*;
+use crate::commands::website::*;
 
 pub mod header;
 mod commands;
 
 #[group]
-#[commands(ping, say)]
+#[commands(ping, say, discord, game_support, github, website)]
 struct General;
 
 struct Handler;

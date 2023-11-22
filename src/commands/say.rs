@@ -5,6 +5,7 @@ use serenity::prelude::*;
 
 #[command]
 #[allowed_roles("Moderator", "Admin")]
+#[only_in("guild")]
 async fn say(ctx: &Context, msg: &Message) -> CommandResult {
     let message = msg.content.replace("~say ", "");
     msg.channel_id.say(&ctx, message).await?;

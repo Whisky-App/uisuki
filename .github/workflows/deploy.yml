@@ -14,6 +14,8 @@ jobs:
     steps:
     - name: Install latest Rust
       uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
     - uses: shuttle-hq/deploy-action@main
       name: ShuttleHQ deploy
       with:

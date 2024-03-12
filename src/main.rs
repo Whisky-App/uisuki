@@ -37,7 +37,7 @@ impl EventHandler for Handler {
 
                 match header {
                     None => {
-                        msg.reply_ping(&context, "Log in invalid format!")
+                        msg.reply_ping(&context, "Log format is invalid!")
                             .await
                             .expect("Failed to send message");
                     }

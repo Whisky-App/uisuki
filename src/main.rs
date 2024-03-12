@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 use serenity::framework::standard::macros::group;
 use serenity::framework::StandardFramework;
 use serenity::model::prelude::*;
@@ -6,6 +8,8 @@ use serenity::prelude::*;
 use shuttle_runtime;
 use shuttle_secrets::SecretStore;
 use log::info;
+use serenity::all::{CreateEmbed, CreateEmbedFooter, CreateMessage};
+use serenity::framework::standard::Configuration;
 
 use crate::commands::ping::*;
 use crate::commands::say::*;
@@ -43,38 +47,32 @@ impl EventHandler for Handler {
                     }
                     Some(header) => {
                         msg.channel_id
-                            .send_message(&context, |m| {
-                                m.embed(|e| {
-                                    e.color(0xC86432)
-                                        .field("Whisky Version", header.whisky_version.0, true)
-                                        .field("Date", header.date.to_owned(), true)
-                                        .field("macOS Version", header.macos_version.0, true)
-                                        .field("Wine Version", header.wine_version.0, true)
-                                        .field("Windows Version", header.windows_version, true)
-                                        .field("Enhanced Sync", header.enhanced_sync, true)
-                                        .field("Bottle Name", header.bottle_name.clone(), false)
-                                        .field(
-                                            "Bottle URL",
-                                            format!("`{}`", header.bottle_url),
-                                            false,
-                                        )
-                                        .field(
-                                            "Arguments",
-                                            format!("`{}`", header.arguments),
-                                            false,
-                                        )
-                                        .footer(|f| {
-                                            f.text(format!(
-                                                "Log uploaded by @{}",
-                                                msg.author.name
-                                            ));
-                                            f
-                                        })
-                                })
-                                    .reference_message(&msg)
-                            })
-                            .await
-                            .expect("Failed to send log analysis message");
+                            .send_message(&context, CreateMessage::new()
+                                .embed(CreateEmbed::new()
+                                    .color(0xC86432)
+                                    .field("Whisky Version", header.whisky_version.0.to_string(), true)
+                                    .field("Date", header.date.to_string(), true)
+                                    .field("macOS Version", header.macos_version.0.to_string(), true)
+                                    .field("Wine Version", header.wine_version.0.to_string(), true)
+                                    .field("Windows Version", header.windows_version.to_string(), true)
+                                    .field("Enhanced Sync", header.enhanced_sync.to_string(), true)
+                                    .field("Bottle Name", header.bottle_name.clone(), false)
+                                    .field(
+                                        "Bottle URL",
+                                        format!("`{}`", header.bottle_url),
+                                        false,
+                                    )
+                                    .field(
+                                        "Arguments",
+                                        format!("`{}`", header.arguments),
+                                        false,
+                                    )
+                                    .footer(CreateEmbedFooter::new(format!(
+                                        "Log uploaded by @{}",
+                                        msg.author.name))
+                                    )
+                                )
+                            ).await.expect("Failed to send log analysis message");
                     }
                 }
             }
@@ -99,8 +97,8 @@ async fn serenity(
     #[shuttle_secrets::Secrets] secret_store: SecretStore,
 ) -> shuttle_serenity::ShuttleSerenity {
     let framework = StandardFramework::new()
-        .configure(|c| c.prefix("~"))
         .group(&GENERAL_GROUP);
+    framework.configure(Configuration::new().prefix("~"));
 
     let token = secret_store.get("DISCORD_TOKEN").unwrap();
 

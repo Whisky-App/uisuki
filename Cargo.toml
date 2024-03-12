@@ -13,4 +13,4 @@ shuttle-runtime = "0.41.0"
 shuttle-secrets = "0.41.0"
 
 [dependencies.serenity]
-version = "0.11"
+version = "0.12.1"

@@ -8,9 +8,9 @@ tokio = { version = "1.36.0", features = ["macros", "rt-multi-thread"] }
 log = "0.4.21"
 semver = "1.0.22"
 iso8601 = "0.6.1"
-shuttle-serenity = "0.41.0"
-shuttle-runtime = "0.41.0"
-shuttle-secrets = "0.41.0"
+shuttle-serenity = "0.42.0"
+shuttle-runtime = "0.42.0"
+shuttle-secrets = "0.42.0"
 
 [dependencies.serenity]
 version = "0.12.1"

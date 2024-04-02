@@ -10,7 +10,6 @@ semver = "1.0.22"
 iso8601 = "0.6.1"
 shuttle-serenity = "0.43.0"
 shuttle-runtime = "0.43.0"
-shuttle-secrets = "0.42.0"
 
 [dependencies.serenity]
 version = "0.12.1"

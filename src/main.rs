@@ -6,7 +6,7 @@ use serenity::model::prelude::*;
 use serenity::prelude::*;
 
 use shuttle_runtime;
-use shuttle_secrets::SecretStore;
+use shuttle_runtime::SecretStore;
 use log::info;
 use serenity::all::{CreateEmbed, CreateEmbedFooter, CreateMessage};
 use serenity::framework::standard::Configuration;
@@ -94,7 +94,7 @@ impl EventHandler for Handler {
 
 #[shuttle_runtime::main]
 async fn serenity(
-    #[shuttle_secrets::Secrets] secret_store: SecretStore,
+    #[shuttle_runtime::Secrets] secret_store: SecretStore,
 ) -> shuttle_serenity::ShuttleSerenity {
     let framework = StandardFramework::new()
         .group(&GENERAL_GROUP);

@@ -1669,27 +1669,6 @@ dependencies = [
 
 [[package]]
 name = "shuttle-common"
-version = "0.41.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "73ba3a5682794470b5bf045c4a36fd42c86bbbe1040edc1855cb68272df69e91"
-dependencies = [
- "anyhow",
- "chrono",
- "comfy-table",
- "crossterm 0.27.0",
- "semver",
- "serde",
- "serde_json",
- "strum 0.26.2",
- "tracing",
- "tracing-subscriber",
- "url",
- "uuid",
- "zeroize",
-]
-
-[[package]]
-name = "shuttle-common"
 version = "0.43.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5367bffb2a9788af483024aaa3a7efc52f901516ef007eb82f739eb7ba609c5f"
@@ -1724,7 +1703,7 @@ dependencies = [
  "futures-core",
  "prost",
  "prost-types",
- "shuttle-common 0.43.0",
+ "shuttle-common",
  "tonic",
 ]
 
@@ -1740,25 +1719,14 @@ dependencies = [
  "serde",
  "serde_json",
  "shuttle-codegen",
- "shuttle-common 0.43.0",
+ "shuttle-common",
  "shuttle-proto",
- "shuttle-service 0.43.0",
+ "shuttle-service",
  "strfmt",
  "tokio",
  "tokio-stream",
  "tonic",
  "tracing-subscriber",
-]
-
-[[package]]
-name = "shuttle-secrets"
-version = "0.42.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df461c61fcae7501a66fdca5fdc97134a7addc38632555b7ea6bdb3a4a4d6921"
-dependencies = [
- "async-trait",
- "serde_json",
- "shuttle-service 0.41.0",
 ]
 
 [[package]]
@@ -1773,20 +1741,6 @@ dependencies = [
 
 [[package]]
 name = "shuttle-service"
-version = "0.41.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2a98f52c7fb8a19f8089cdee5ffd5290617f6d322f06ee292d0a2ed75a9094a"
-dependencies = [
- "anyhow",
- "async-trait",
- "serde",
- "shuttle-common 0.41.0",
- "strfmt",
- "thiserror",
-]
-
-[[package]]
-name = "shuttle-service"
 version = "0.43.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c41b682b8639915d01f6b9b5bff76afc8b67d553b8199d0364bd4675397b06d"
@@ -1794,7 +1748,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "serde",
- "shuttle-common 0.43.0",
+ "shuttle-common",
  "strfmt",
  "thiserror",
 ]
@@ -2434,7 +2388,6 @@ dependencies = [
  "semver",
  "serenity",
  "shuttle-runtime",
- "shuttle-secrets",
  "shuttle-serenity",
  "tokio",
 ]

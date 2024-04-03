@@ -6,6 +6,6 @@ use serenity::prelude::*;
 #[command]
 #[aliases("gs")]
 async fn game_support(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(&ctx, "https://github.com/Whisky-App/Whisky/wiki/Game-Support").await?;
+    msg.reply(&ctx, "https://docs.getwhisky.app/game-support").await?;
     Ok(())
 }

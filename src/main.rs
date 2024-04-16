@@ -17,12 +17,13 @@ use crate::commands::discord::*;
 use crate::commands::game_support::*;
 use crate::commands::github::*;
 use crate::commands::website::*;
+use crate::commands::does_my_game_work::*;
 
 pub mod header;
 mod commands;
 
 #[group]
-#[commands(ping, say, discord, game_support, github, website)]
+#[commands(ping, say, discord, game_support, github, website, does_my_game_work)]
 struct General;
 
 struct Handler;

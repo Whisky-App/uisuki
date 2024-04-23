@@ -9,7 +9,11 @@ pub async fn game_support(ctx: Context<'_>,
 
     match game_name {
         Some(name) => {
-            let esc_name = name.trim().replace(" ", "-").to_lowercase();
+            let esc_name = name
+                .trim()
+                .replace(" ", "-")
+                .chars().filter(|b| b.is_alphanumeric() || *b == '-').collect::<String>()
+                .to_lowercase();
             message.push_str(&esc_name);
 
             let resp = reqwest::get(message.clone()).await?;

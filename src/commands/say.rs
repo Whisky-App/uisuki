@@ -5,6 +5,10 @@ pub async fn say(ctx: Context<'_>,
     #[description = "Message"] message: String) -> Result<(), Error> {
     ctx.say(message).await?;
 
+    if let Context::Prefix(prefix) = ctx {
+        prefix.msg.delete(ctx).await?;
+    }
+
     Ok(())
 }
 

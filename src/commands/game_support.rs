@@ -6,7 +6,7 @@ use crate::{Context, Error};
 pub async fn game_support(ctx: Context<'_>,
     #[description = "Game Name"] game_name: Option<String>) -> Result<(), Error> {
     // String containing default response
-    let mut message = "https://docs.getwhisky.app/game-support/";
+    let mut message = String::from("https://docs.getwhisky.app/game-support/");
 
     match game_name {
         Some(name) => {

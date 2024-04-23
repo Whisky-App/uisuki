@@ -1,11 +1,8 @@
-use serenity::framework::standard::macros::command;
-use serenity::framework::standard::CommandResult;
-use serenity::model::prelude::*;
-use serenity::prelude::*;
+use crate::{Context, Error};
 
-#[command]
-async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(&ctx, "Pong! ~").await?;
+#[poise::command(prefix_command, slash_command)]
+pub async fn ping(ctx: Context<'_>) -> Result<(), Error> {
+    ctx.reply("Pong! ~").await?;
     Ok(())
 }
 

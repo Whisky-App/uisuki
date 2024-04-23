@@ -1,15 +1,10 @@
-use serenity::framework::standard::macros::command;
-use serenity::framework::standard::CommandResult;
-use serenity::model::prelude::*;
-use serenity::prelude::*;
+use crate::{Context, Error};
 
-#[command]
-#[owners_only]
-#[only_in("guild")]
-async fn say(ctx: &Context, msg: &Message) -> CommandResult {
-    let message = msg.content.replace("~say ", "");
-    msg.channel_id.say(&ctx, message).await?;
-    msg.delete(&ctx).await?;
+#[poise::command(prefix_command, slash_command, owners_only, guild_only)]
+pub async fn say(ctx: Context<'_>,
+    #[description = "Message"] message: String) -> Result<(), Error> {
+    ctx.reply()
+    ctx.say(message).await?;
 
     Ok(())
 }

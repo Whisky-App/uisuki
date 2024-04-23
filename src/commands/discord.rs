@@ -1,10 +1,7 @@
-use serenity::framework::standard::macros::command;
-use serenity::framework::standard::CommandResult;
-use serenity::model::prelude::*;
-use serenity::prelude::*;
+use crate::{Context, Error};
 
-#[command]
-async fn discord(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(&ctx, "https://discord.gg/CsqAfs9CnM").await?;
+#[poise::command(prefix_command, slash_command)]
+pub async fn discord(ctx: Context<'_>) -> Result<(), Error> {
+    ctx.reply("https://discord.gg/CsqAfs9CnM").await?;
     Ok(())
 }

@@ -12,15 +12,18 @@ pub async fn game_support(ctx: Context<'_>,
         Some(name) => {
             site.push_str(&name);
 
-            let resp = reqwest::get(site.clone()).await?;
+            // TODO: Shuttle blocks us from making requests
+            // let resp = reqwest::get(site.clone()).await?;
+            //
+            // info!("{} returned code {}", site, resp.status());
+            //
+            // if resp.status() == StatusCode::OK {
+            //
+            // } else {
+            //     ctx.reply("Hmm, seems that game isn't in our docs.").await?;
+            // }
 
-            info!("{} returned code {}", site, resp.status());
-            
-            if resp.status() == StatusCode::OK {
-                ctx.reply(site).await?;
-            } else {
-                ctx.reply("Hmm, seems that game isn't in our docs.").await?;
-            }
+            ctx.reply(site).await?;
         },
         None => {
             ctx.reply(site).await?;

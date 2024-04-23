@@ -79,12 +79,14 @@ impl EventHandler for Handler {
             }
         }
 
-        if msg.content.contains("fortnite") {
-            let _ = msg.reply_ping(&context, "no.").await;
-        }
+        if !msg.author.bot {
+            if msg.content.contains("fortnite") {
+                let _ = msg.reply_ping(&context, "no.").await;
+            }
 
-        if msg.content.contains("Fortnite") {
-            let _ = msg.reply_ping(&context, "no.").await;
+            if msg.content.contains("Fortnite") {
+                let _ = msg.reply_ping(&context, "no.").await;
+            }
         }
     }
 

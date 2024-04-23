@@ -4,7 +4,7 @@ use serenity::model::prelude::*;
 use serenity::prelude::*;
 
 #[command]
-#[allowed_roles("Moderator", "Admin")]
+#[owners_only]
 #[only_in("guild")]
 async fn say(ctx: &Context, msg: &Message) -> CommandResult {
     let message = msg.content.replace("~say ", "");

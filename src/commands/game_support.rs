@@ -13,7 +13,7 @@ pub async fn game_support(ctx: Context<'_>,
 
             let resp = reqwest::get(site.clone()).await?;
 
-            if resp.status() != StatusCode::NOT_FOUND {
+            if resp.status() == StatusCode::OK {
                 ctx.reply(site).await?;
             } else {
                 ctx.reply("Hmm, seems that game isn't in our docs.").await?;

@@ -1,3 +1,4 @@
+use log::info;
 use reqwest::StatusCode;
 use crate::{Context, Error};
 
@@ -13,6 +14,8 @@ pub async fn game_support(ctx: Context<'_>,
 
             let resp = reqwest::get(site.clone()).await?;
 
+            info!("{} returned code {}", site, resp.status());
+            
             if resp.status() == StatusCode::OK {
                 ctx.reply(site).await?;
             } else {

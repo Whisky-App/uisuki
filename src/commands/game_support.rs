@@ -16,7 +16,19 @@ pub async fn game_support(ctx: Context<'_>,
 
             match resp.status() {
                 StatusCode::OK => {
-                    ctx.reply(message).await?;
+                    if let Context::Prefix(prefix) = ctx {
+                        match prefix.msg.clone().referenced_message {
+                            Some(parent) => {
+                                parent.reply(&ctx, message).await?;
+                                prefix.msg.delete(ctx).await?;
+                            },
+                            None => {
+                                ctx.reply(message).await?;
+                            }
+                        }
+                    } else {
+                        ctx.reply(message).await?;
+                    }
                 },
                 StatusCode::NOT_FOUND => {
                     ctx.reply("Hmm, seems that game isn't in our docs.").await?;
@@ -28,20 +40,6 @@ pub async fn game_support(ctx: Context<'_>,
         },
         None => {}
     }
-
-    // if let Context::Prefix(prefix) = ctx {
-    //     match prefix.msg.clone().referenced_message {
-    //         Some(parent) => {
-    //             parent.reply(&ctx, message).await?;
-    //             prefix.msg.delete(ctx).await?;
-    //         },
-    //         None => {
-    //             ctx.reply(message).await?;
-    //         }
-    //     }
-    // } else {
-    //     ctx.reply(message).await?;
-    // }
 
     Ok(())
 }

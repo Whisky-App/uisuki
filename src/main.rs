@@ -29,7 +29,7 @@ async fn serenity(
         | serenity::GatewayIntents::MESSAGE_CONTENT;
 
     let framework = poise::Framework::builder()
-        .setup(|ctx, ready, framework| Box::pin(async move {
+        .setup(|ctx, _ready, framework| Box::pin(async move {
             poise::builtins::register_globally(ctx, &framework.options().commands).await?;
             Ok(())
         }))
@@ -66,7 +66,7 @@ async fn event_handler(
     ctx: &serenity::Context,
     event: &serenity::FullEvent,
     _framework: poise::FrameworkContext<'_, Data, Error>,
-    data: &Data,
+    _data: &Data,
 ) -> Result<(), Error> {
     match event {
         serenity::FullEvent::Ready { data_about_bot, .. } => {

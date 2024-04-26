@@ -5,3 +5,4 @@ pub mod game_support;
 pub mod github;
 pub mod website;
 pub mod discord;
+pub mod username;

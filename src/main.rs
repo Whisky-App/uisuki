@@ -14,7 +14,8 @@ use crate::commands::game_support::*;
 use crate::commands::github::*;
 use crate::commands::website::*;
 use crate::commands::does_my_game_work::*;
-use crate::commands::say::say;
+use crate::commands::say::*;
+use crate::commands::username::*;
 
 pub mod header;
 mod commands;
@@ -41,7 +42,8 @@ async fn serenity(
                 github(),
                 ping(),
                 website(),
-                say()
+                say(),
+                username()
             ],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("~".into()),

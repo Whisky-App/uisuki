@@ -7,43 +7,48 @@ pub async fn game_support(ctx: Context<'_>,
     // String containing default response
     let mut message = String::from("https://whisky-app.github.io/whisky-book/game-support/");
 
-    match game_name {
-        Some(name) => {
-            let esc_name = name
-                .trim()
-                .replace(" ", "-")
-                .chars().filter(|b| b.is_alphanumeric() || *b == '-').collect::<String>()
-                .to_lowercase();
-            message.push_str(&esc_name);
-
-            let resp = reqwest::get(message.clone()).await?;
-
-            match resp.status() {
-                StatusCode::OK => {
-                    if let Context::Prefix(prefix) = ctx {
-                        match prefix.msg.clone().referenced_message {
-                            Some(parent) => {
-                                parent.reply(&ctx, message).await?;
-                                prefix.msg.delete(ctx).await?;
-                            },
-                            None => {
-                                ctx.reply(message).await?;
-                            }
-                        }
-                    } else {
-                        ctx.reply(message).await?;
-                    }
-                },
-                StatusCode::NOT_FOUND => {
-                    ctx.reply("Hmm, seems that game isn't in our docs.").await?;
-                },
-                code => {
-                    ctx.reply(format!("Hmm, seems I'm having trouble connecting to docs. ({code})"), ).await?;
-                }
-            }
-        },
-        None => {}
+    if game_name == None {
+        ctx.reply(message).await?;
     }
+    else {
+        match game_name {
+            Some(name) => {
+                let esc_name = name
+                    .trim()
+                    .replace(" ", "-")
+                    .chars().filter(|b| b.is_alphanumeric() || *b == '-').collect::<String>()
+                    .to_lowercase();
+                message.push_str(&esc_name);
 
+                let resp = reqwest::get(message.clone()).await?;
+
+                match resp.status() {
+                    StatusCode::OK => {
+                        if let Context::Prefix(prefix) = ctx {
+                            match prefix.msg.clone().referenced_message {
+                                Some(parent) => {
+                                    parent.reply(&ctx, message).await?;
+                                    prefix.msg.delete(ctx).await?;
+                                },
+                                None => {
+                                    ctx.reply(message).await?;
+                                }
+                            }
+                        } else {
+                            ctx.reply(message).await?;
+                        }
+                    },
+                    StatusCode::NOT_FOUND => {
+                        ctx.reply("Hmm, seems that game isn't in our docs.").await?;
+                    },
+                    code => {
+                        ctx.reply(format!("Hmm, seems I'm having trouble connecting to docs. ({code})"), ).await?;
+                    }
+                }
+            },
+            None => {}
+        }
+    }
+    
     Ok(())
 }

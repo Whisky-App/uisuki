@@ -12,7 +12,7 @@ Follow this Apple support guide to change your username: https://support.apple.c
                 message += "\n\nThis command was invoked by ";
                 message += ctx.author().to_string().as_str();
                 
-                parent.reply(&ctx, message).await?;
+                parent.reply_ping(&ctx, message).await?;
                 prefix.msg.delete(ctx).await?;
             },
             None => {

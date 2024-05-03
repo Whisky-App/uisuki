@@ -21,7 +21,7 @@ As a reminder: Most games with EasyAntiCheat and most other anti-cheats will **N
                 message += "\n\nThis command was invoked by ";
                 message += ctx.author().to_string().as_str();
 
-                parent.reply(&ctx, message).await?;
+                parent.reply_ping(&ctx, message).await?;
                 prefix.msg.delete(ctx).await?;
             },
             None => {

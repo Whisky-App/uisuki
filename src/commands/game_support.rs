@@ -23,6 +23,9 @@ pub async fn game_support(ctx: Context<'_>,
                     if let Context::Prefix(prefix) = ctx {
                         match prefix.msg.clone().referenced_message {
                             Some(parent) => {
+                                message += "\n\nThis command was invoked by ";
+                                message += ctx.author().to_string().as_str();
+                                
                                 parent.reply(&ctx, message).await?;
                                 prefix.msg.delete(ctx).await?;
                             },
@@ -46,6 +49,9 @@ pub async fn game_support(ctx: Context<'_>,
             if let Context::Prefix(prefix) = ctx {
                 match prefix.msg.clone().referenced_message {
                     Some(parent) => {
+                        message += "\n\nThis command was invoked by ";
+                        message += ctx.author().to_string().as_str();
+        
                         parent.reply(&ctx, message).await?;
                         prefix.msg.delete(ctx).await?;
                     },

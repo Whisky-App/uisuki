@@ -6,3 +6,4 @@ pub mod github;
 pub mod website;
 pub mod discord;
 pub mod username;
+pub mod heroic;

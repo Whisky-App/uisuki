@@ -6,3 +6,5 @@ pub mod github;
 pub mod website;
 pub mod discord;
 pub mod username;
+pub mod heroic;
+pub mod whats_where;

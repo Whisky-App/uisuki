@@ -1,9 +1,9 @@
 use crate::{Context, Error};
 
-#[poise::command(prefix_command, slash_command, aliases("gptk", "bottles", "logs", "whiskycmd", "whatswhere", "where"))]
+#[poise::command(prefix_command, slash_command, aliases("whiskywine", "bottles", "logs", "whiskycmd", "whatswhere", "where"))]
 pub async fn whats_where(ctx: Context<'_>) -> Result<(), Error> {
 
-    let gptk = "**GPTK:** `~/Library/Application Support/com.isaacmarovitz.Whisky/Libraries`";
+    let whiskywine = "**WhiskyWine:** `~/Library/Application Support/com.isaacmarovitz.Whisky/Libraries`";
     let bottles = "**Bottles:** `~/Library/Containers/com.isaacmarovitz.Whisky/Bottles`";
     let logs = "**Logs:** `~/Library/Logs/com.isaacmarovitz.Whisky`";
     let whiskycmd = "**WhiskyCmd:** `/usr/local/bin/whisky`";
@@ -23,7 +23,7 @@ pub async fn whats_where(ctx: Context<'_>) -> Result<(), Error> {
     if cmd_name == "whats_where" || cmd_name == "whatswhere" || cmd_name == "where" {
         message += bigmessage;
         message += "\n";
-        message += gptk;
+        message += whiskywine;
         message += "\n";
         message += bottles;
         message += "\n";
@@ -31,9 +31,9 @@ pub async fn whats_where(ctx: Context<'_>) -> Result<(), Error> {
         message += "\n";
         message += whiskycmd;
     }
-    else if cmd_name == "gptk" {
+    else if cmd_name == "whiskywine" {
         message += findernote;
-        message += gptk;
+        message += whiskywine;
     }
     else if cmd_name == "bottles" {
         message += findernote;

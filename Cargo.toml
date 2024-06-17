@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-tokio = { version = "1.37.0", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.38.0", features = ["macros", "rt-multi-thread"] }
 log = "0.4.21"
-semver = "1.0.22"
+semver = "1.0.23"
 iso8601 = "0.6.1"
-shuttle-serenity = "0.44.0"
-shuttle-runtime = "0.44.0"
+shuttle-serenity = "0.46.0"
+shuttle-runtime = "0.46.0"
 poise = "0.6.1"
 reqwest = "0.12.4"

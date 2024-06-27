@@ -2,7 +2,7 @@ use crate::{Context, Error};
 
 #[poise::command(prefix_command, slash_command)]
 pub async fn username(ctx: Context<'_>) -> Result<(), Error> {
-    let message = "Your username ends in a `.` which is a special character. This can cause issues with Wine.
+    let message = "Your username contains a `.` which is a special character. This can cause issues with Wine.
 
 Follow this Apple support guide to change your username: https://support.apple.com/en-us/102547";
 

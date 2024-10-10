@@ -14,9 +14,10 @@ jobs:
     steps:
     - uses: dtolnay/rust-toolchain@stable
 
-    - uses: shuttle-hq/deploy-action@main
+    - uses: shuttle-hq/deploy-action@v2
       name: ShuttleHQ deploy
       with:
-        deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+        shuttle-api-key: ${{ secrets.SHUTTLE_API_KEY }}
+        project-id: proj_01J9VAC6QE1YKZXRHWPXR7NWJH
         secrets: |
           DISCORD_TOKEN = '${{ secrets.DISCORD_TOKEN }}'

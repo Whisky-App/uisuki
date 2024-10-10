@@ -46,7 +46,7 @@ async fn serenity(
                 website(),
                 say(),
                 username(),
-                heroic()
+                heroic(),
                 whats_where()
             ],
             prefix_options: poise::PrefixFrameworkOptions {

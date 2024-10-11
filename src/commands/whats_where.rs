@@ -14,7 +14,7 @@ pub async fn whats_where(ctx: Context<'_>) -> Result<(), Error> {
 
     let bigmessage = "Need to find something installed by Whisky? Look in the following locations.
 
-`Note: If you're looking in Finder, you may need to do ⌘ + Shift + . to show hiddlen files. Also, com.isaacmarovitz.Whisky may just show up as a folder titled Whisky.`
+`Note: If you're looking in Finder, you may need to do ⌘ + Shift + . to show hidden files. Also, com.isaacmarovitz.Whisky may just show up as a folder titled Whisky.`
 ";
 
     let mut message = "".to_owned();

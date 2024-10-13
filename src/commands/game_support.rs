@@ -46,10 +46,13 @@ pub async fn game_support(ctx: Context<'_>,
             if let Context::Prefix(prefix) = ctx {
                 match prefix.msg.clone().referenced_message {
                     Some(parent) => {
-                        parent.reply(&ctx, message).await?;
+                        message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), "game_support");
+
+                        parent.reply_ping(&ctx, message).await?;
                         prefix.msg.delete(ctx).await?;
                     },
                     None => {
+                        message += &format!("\n-# This command was invoked using `~{}`", "game_support");
                         ctx.reply(message).await?;
                     }
                 }

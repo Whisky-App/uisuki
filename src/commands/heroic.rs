@@ -2,7 +2,6 @@ use crate::{Context, Error};
 
 #[poise::command(prefix_command, slash_command, aliases("epic", "gog", "amazon", "prime"))]
 pub async fn heroic(ctx: Context<'_>) -> Result<(), Error> {
-
     let default_message = "To use Whisky in the [Heroic Games Launcher](https://heroicgameslauncher.com/), follow these instructions:";
 
     let epic = "To play games on the Epic Games Launcher, use [Heroic](https://heroicgameslauncher.com/).";
@@ -18,18 +17,15 @@ pub async fn heroic(ctx: Context<'_>) -> Result<(), Error> {
         message += default_message;
         message += "\n\n";
         message += bigmessage;
-    }
-    else if cmd_name == "epic" {
+    } else if cmd_name == "epic" {
         message += epic;
         message += "\n\n";
         message += bigmessage;
-    }
-    else if cmd_name == "gog" {
+    } else if cmd_name == "gog" {
         message += gog;
         message += "\n\n";
         message += bigmessage;
-    }
-    else if cmd_name == "amazon" || cmd_name == "prime" {
+    } else if cmd_name == "amazon" || cmd_name == "prime" {
         message += amazon;
         message += "\n\n";
         message += bigmessage;
@@ -38,13 +34,13 @@ pub async fn heroic(ctx: Context<'_>) -> Result<(), Error> {
     if let Context::Prefix(prefix) = ctx {
         match prefix.msg.clone().referenced_message {
             Some(parent) => {
-                message += "\n\nThis command was invoked by ";
-                message += ctx.author().to_string().as_str();
+                message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), "heroic");
 
                 parent.reply_ping(&ctx, message).await?;
                 prefix.msg.delete(ctx).await?;
-            },
+            }
             None => {
+                message += &format!("\n-# This command was invoked using `~{}`", "heroic");
                 ctx.reply(message).await?;
             }
         }

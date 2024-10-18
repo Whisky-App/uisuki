@@ -18,6 +18,7 @@ use crate::commands::say::*;
 use crate::commands::username::*;
 use crate::commands::heroic::*;
 use crate::commands::whats_where::*;
+use crate::commands::msync::*;
 
 pub mod header;
 mod commands;
@@ -47,7 +48,8 @@ async fn serenity(
                 say(),
                 username(),
                 heroic(),
-                whats_where()
+                whats_where(),
+                msync()
             ],
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("~".into()),

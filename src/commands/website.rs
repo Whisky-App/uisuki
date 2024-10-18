@@ -7,13 +7,13 @@ pub async fn website(ctx: Context<'_>) -> Result<(), Error> {
     if let Context::Prefix(prefix) = ctx {
         match prefix.msg.clone().referenced_message {
             Some(parent) => {
-                message += "\n\nThis command was invoked by ";
-                message += ctx.author().to_string().as_str();
-                
+                message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), "website");
+
                 parent.reply_ping(&ctx, message).await?;
                 prefix.msg.delete(ctx).await?;
             },
             None => {
+                message += &format!("\n-# This command was invoked using `~{}`", "website");
                 ctx.reply(message).await?;
             }
         }

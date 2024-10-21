@@ -17,7 +17,7 @@ use crate::commands::does_my_game_work::*;
 use crate::commands::say::*;
 use crate::commands::username::*;
 use crate::commands::heroic::*;
-use crate::commands::whats_where::*;
+use crate::commands::paths::*;
 use crate::commands::msync::*;
 
 pub mod header;
@@ -48,7 +48,7 @@ async fn serenity(
                 say(),
                 username(),
                 heroic(),
-                whats_where(),
+                paths(),
                 msync()
             ],
             prefix_options: poise::PrefixFrameworkOptions {

@@ -1,7 +1,7 @@
 use crate::{Context, Error};
 
-#[poise::command(prefix_command, slash_command, aliases("whiskywine", "bottles", "logs", "whiskycmd", "whatswhere", "where", "paths", "path"))]
-pub async fn whats_where(ctx: Context<'_>) -> Result<(), Error> {
+#[poise::command(prefix_command, slash_command, aliases("whiskywine", "bottles", "logs", "whiskycmd", "whats_where", "whatswhere", "where", "path"))]
+pub async fn paths(ctx: Context<'_>) -> Result<(), Error> {
 
     let whiskywine = "**WhiskyWine:** `~/Library/Application Support/com.isaacmarovitz.Whisky/Libraries`";
     let bottles = "**Bottles:** `~/Library/Containers/com.isaacmarovitz.Whisky/Bottles`";
@@ -51,13 +51,13 @@ pub async fn whats_where(ctx: Context<'_>) -> Result<(), Error> {
     if let Context::Prefix(prefix) = ctx {
         match prefix.msg.clone().referenced_message {
             Some(parent) => {
-                message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), "whats_where");
+                message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), cmd_name);
 
                 parent.reply_ping(&ctx, message).await?;
                 prefix.msg.delete(ctx).await?;
             },
             None => {
-                message += &format!("\n-# This command was invoked using `~{}`", "whats_where");
+                message += &format!("\n-# This command was invoked using `~{}`", cmd_name);
                 ctx.reply(message).await?;
             }
         }

@@ -34,13 +34,13 @@ pub async fn heroic(ctx: Context<'_>) -> Result<(), Error> {
     if let Context::Prefix(prefix) = ctx {
         match prefix.msg.clone().referenced_message {
             Some(parent) => {
-                message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), "heroic");
+                message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), cmd_name);
 
                 parent.reply_ping(&ctx, message).await?;
                 prefix.msg.delete(ctx).await?;
             }
             None => {
-                message += &format!("\n-# This command was invoked using `~{}`", "heroic");
+                message += &format!("\n-# This command was invoked using `~{}`", cmd_name);
                 ctx.reply(message).await?;
             }
         }

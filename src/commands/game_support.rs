@@ -6,7 +6,7 @@ pub async fn game_support(ctx: Context<'_>,
     #[description = "Game Name"] game_name: Option<String>) -> Result<(), Error> {
     // String containing default response
     let mut message = String::from("https://docs.getwhisky.app/game-support/");
-
+    let cmd_name = ctx.invoked_command_name();
     match game_name {
         Some(name) => {
             let esc_name = name
@@ -46,13 +46,13 @@ pub async fn game_support(ctx: Context<'_>,
             if let Context::Prefix(prefix) = ctx {
                 match prefix.msg.clone().referenced_message {
                     Some(parent) => {
-                        message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), "game_support");
+                        message += &format!("\n-# This command was invoked by {} using `~{}`", ctx.author().to_string().as_str(), cmd_name);
 
                         parent.reply_ping(&ctx, message).await?;
                         prefix.msg.delete(ctx).await?;
                     },
                     None => {
-                        message += &format!("\n-# This command was invoked using `~{}`", "game_support");
+                        message += &format!("\n-# This command was invoked using `~{}`", cmd_name);
                         ctx.reply(message).await?;
                     }
                 }

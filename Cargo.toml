@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-tokio = { version = "1.40.0", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.41.0", features = ["macros", "rt-multi-thread"] }
 log = "0.4.22"
 semver = "1.0.23"
 iso8601 = "0.6.1"

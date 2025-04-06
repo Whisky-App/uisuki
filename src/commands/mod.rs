@@ -9,3 +9,4 @@ pub mod username;
 pub mod heroic;
 pub mod whats_where;
 pub mod msync;
+pub mod steam;

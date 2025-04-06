@@ -139,6 +139,20 @@ async fn event_handler(
                 if new_message.content.contains("Fortnite") {
                     let _ = new_message.reply_ping(&ctx, "no.").await;
                 }
+
+                if new_message.content.contains("0x3008") {
+                    let _ = new_message.reply_ping(&ctx, "https://docs.getwhisky.app/steam").await;
+                }
+
+                if (new_message.content.contains("Steam") || new_message.content.contains("steam")) &&
+                    (new_message.content.contains("fix") ||
+                        new_message.content.contains("issue") ||
+                        new_message.content.contains("problem") ||
+                        new_message.content.contains("error") ||
+                        new_message.content.contains("crash"))
+                {
+                    let _ = new_message.reply_ping(&ctx, "https://docs.getwhisky.app/steam").await;
+                }
             }
         }
         _ => {}
